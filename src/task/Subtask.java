@@ -1,7 +1,6 @@
 package task;
 
 public class Subtask extends Task {
-    int subtaskId;
     private int epicId;
 
     public Subtask(String name, String description, int epicId) {

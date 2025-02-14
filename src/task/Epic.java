@@ -3,7 +3,6 @@ package task;
 import java.util.ArrayList;
 
 public class Epic extends Task {
-    Status status = Status.NEW;
     private ArrayList<Integer> subtaskIds;
 
     public Epic(String name, String description) {
