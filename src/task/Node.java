@@ -5,7 +5,7 @@ public class Node {
     Node prev;
     Node next;
 
-    public Node(Task task){
+    public Node(Task task) {
         this.task = task;
     }
 

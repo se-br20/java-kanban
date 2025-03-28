@@ -4,6 +4,7 @@ package manager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import task.*;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class InMemoryTaskManagerTest {
@@ -68,6 +69,7 @@ class InMemoryTaskManagerTest {
         Task updatedTask = taskManager.getTaskById(task.getId());
         assertEquals("Updated description", updatedTask.getDescription(), "Описание задачи должно обновиться");
     }
+
     @Test
     void shouldNotAddSubtaskToNonexistentEpic() {
         Subtask subtask = new Subtask("Subtask", "Description", 999); // Несуществующий ID эпика
