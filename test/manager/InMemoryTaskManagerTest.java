@@ -4,7 +4,6 @@ package manager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import task.*;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class InMemoryTaskManagerTest {
@@ -28,25 +27,53 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    void shouldNotConflictWithGeneratedAndManualId() {
-        Task task1 = new Task("Task 1", "Description");
-        task1.setId(5);
-        taskManager.addTask(task1);
+    void shouldRemoveEpicAndSubtasks() {
+        Epic epic = new Epic("Epic 1", "Epic description");
+        taskManager.addEpic(epic);
 
-        Task task2 = new Task("Task 2", "Description");
-        taskManager.addTask(task2);
+        Subtask subtask1 = new Subtask("Subtask 1", "Description", epic.getId());
+        Subtask subtask2 = new Subtask("Subtask 2", "Description", epic.getId());
 
-        assertNotEquals(5, task2.getId(), "Генерируемый ID не должен конфликтовать с установленным вручную");
+        taskManager.addSubtask(subtask1);
+        taskManager.addSubtask(subtask2);
+
+        taskManager.removeEpicById(epic.getId());
+
+        assertNull(taskManager.getEpicById(epic.getId()), "Эпик должен быть удалён");
+        assertNull(taskManager.getSubtaskById(subtask1.getId()), "Подзадача 1 должна быть удалена");
+        assertNull(taskManager.getSubtaskById(subtask2.getId()), "Подзадача 2 должна быть удалена");
     }
 
     @Test
-    void shouldPreserveTaskDataWhenAdded() {
-        Task task = new Task("Original Task", "Original description");
+    void shouldNotHaveOrphanedSubtasksAfterEpicRemoval() {
+        Epic epic = new Epic("Epic 1", "Epic description");
+        taskManager.addEpic(epic);
+
+        Subtask subtask = new Subtask("Subtask", "Description", epic.getId());
+        taskManager.addSubtask(subtask);
+
+        taskManager.removeEpicById(epic.getId());
+
+        assertFalse(taskManager.getSubtasks().contains(subtask), "После удаления эпика подзадачи не должны оставаться");
+    }
+
+    @Test
+    void shouldUpdateTaskFieldsAndKeepDataIntegrity() {
+        Task task = new Task("Task", "Description");
         taskManager.addTask(task);
 
-        Task retrievedTask = taskManager.getTaskById(task.getId());
+        task.setDescription("Updated description");
+        taskManager.updateTask(task);
 
-        assertEquals("Original Task", retrievedTask.getName());
-        assertEquals("Original description", retrievedTask.getDescription());
+        Task updatedTask = taskManager.getTaskById(task.getId());
+        assertEquals("Updated description", updatedTask.getDescription(), "Описание задачи должно обновиться");
+    }
+    @Test
+    void shouldNotAddSubtaskToNonexistentEpic() {
+        Subtask subtask = new Subtask("Subtask", "Description", 999); // Несуществующий ID эпика
+
+        taskManager.addSubtask(subtask);
+
+        assertNull(taskManager.getSubtaskById(subtask.getId()), "Подзадача не должна быть добавлена без существующего эпика");
     }
 }

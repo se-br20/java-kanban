@@ -2,7 +2,7 @@ import manager.Managers;
 import manager.TaskManager;
 import task.*;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
@@ -33,6 +33,12 @@ public class Main {
         System.out.println("\nСписок задач:");
         System.out.println(taskManager.getTasks());
 
+        System.out.println("\nПолучение Task 1 по ID:");
+        System.out.println(taskManager.getTaskById(task1.getId()));
+
+        System.out.println("\nПолучение Task 2 по ID:");
+        System.out.println(taskManager.getTaskById(task2.getId()));
+
         System.out.println("\nСписок эпиков:");
         System.out.println(taskManager.getEpics());
 
@@ -40,7 +46,7 @@ public class Main {
         System.out.println(taskManager.getSubtasks());
 
         System.out.println("\nПодзадачи для Epic 1:");
-        ArrayList<Subtask> epic1Subtasks = taskManager.getSubtasksEpic(epic1.getId());
+        List<Subtask> epic1Subtasks = taskManager.getSubtasksEpic(epic1.getId());
         System.out.println(epic1Subtasks);
 
         System.out.println("\nОбновление Task 2:");
@@ -56,6 +62,7 @@ public class Main {
         System.out.println("\nПолучение Epic 1 по ID:");
         System.out.println(taskManager.getEpicById(epic1.getId()));
 
+
         System.out.println("\nПолучение Subtask 2 по ID:");
         System.out.println(taskManager.getSubtaskById(subtask2.getId()));
 
@@ -66,6 +73,9 @@ public class Main {
 
         System.out.println("\nОбновленный Epic 1 (статус изменился?):");
         System.out.println(taskManager.getEpicById(epic1.getId()));
+
+        System.out.println("\nИстория просмотров:");
+        System.out.println(taskManager.getHistory());
 
         taskManager.removeTaskById(task1.getId());
         System.out.println("\nПосле удаления Task 1:");
@@ -98,7 +108,7 @@ public class Main {
         System.out.println("\nПосле удаления всех эпиков:");
         System.out.println(taskManager.getEpics());
 
-        System.out.println("\nФинальная история просмотров:");
+        System.out.println("\nИстория просмотров после удаления всех задач, подзадач и эпиков:");
         System.out.println(taskManager.getHistory());
     }
 }
