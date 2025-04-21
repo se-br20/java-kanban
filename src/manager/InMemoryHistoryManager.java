@@ -1,6 +1,6 @@
 package manager;
 
-import task.Node;
+
 import task.Task;
 
 import java.util.*;
@@ -24,10 +24,7 @@ public class InMemoryHistoryManager implements HistoryManager {
     @Override
     public void remove(int id) {
         Node node = history.remove(id);
-        if (node != null) {
-            removeNode(node);
-        }
-
+        removeNode(node);
     }
 
     @Override
@@ -41,8 +38,8 @@ public class InMemoryHistoryManager implements HistoryManager {
             head = node;
             tail = node;
         } else {
-            tail.setNext(node);
-            node.setPrev(tail);
+            tail.next = node;
+            node.prev = tail;
             tail = node;
         }
         history.put(task.getId(), node);
@@ -50,18 +47,19 @@ public class InMemoryHistoryManager implements HistoryManager {
 
     private void removeNode(Node node) {
         if (node == null) return;
-        if (node.getPrev() != null) {
-            node.getPrev().setNext(node.getNext());
+        if (node.prev != null) {
+            node.prev.next = node.next;
         } else {
-            head = node.getNext();
+            head = node.next;
         }
-        if (node.getNext() != null) {
-            node.getNext().setPrev(node.getPrev());
+        if (node.next != null) {
+            node.next.prev = node.prev;
         } else {
-            tail = node.getPrev();
+            tail = node.prev;
         }
-        node.setPrev(null);
-        node.setNext(null);
+        node.prev = null;
+        node.next = null;
+        node.task = null;
     }
 
     private List<Task> getTasks() {
@@ -69,9 +67,20 @@ public class InMemoryHistoryManager implements HistoryManager {
         Node current = head;
 
         while (current != null) {
-            taskHistory.add(current.getTask());
-            current = current.getNext();
+            taskHistory.add(current.task);
+            current = current.next;
         }
         return taskHistory;
+    }
+
+    private static class Node {
+        Task task;
+        Node prev;
+        Node next;
+
+        public Node(Task task) {
+            this.task = task;
+        }
+
     }
 }
