@@ -77,7 +77,6 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         return history;
     }
 
-
     private void save() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
             writer.write("id,type,name,status,description,epic\n");
@@ -95,6 +94,16 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             writer.write(historyToString(historyManager));
         } catch (IOException e) {
             throw new ManagerSaveException("Ошибка при сохранении файла: " + file.getName(), e);
+        }
+    }
+
+    private Task getTaskFromAll(int id) {
+        if (tasks.containsKey(id)) {
+            return tasks.get(id);
+        } else if (epics.containsKey(id)) {
+            return epics.get(id);
+        } else {
+            return subtasks.get(id);
         }
     }
 
@@ -122,10 +131,13 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 }
                 i++;
             }
+            if (i < lines.size() && lines.get(i).isBlank()) {
+                i++;
+            }
             if (i < lines.size()) {
                 List<Integer> history = manager.historyFromString(lines.get(i));
                 for (int taskId : history) {
-                    Task task = manager.getTaskById(taskId);
+                    Task task = manager.getTaskFromAll(taskId);
                     if (task != null) {
                         manager.historyManager.add(task);
                     }
@@ -193,6 +205,27 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     public void removeSubtaskById(int id) {
         super.removeSubtaskById(id);
         save();
+    }
+
+    @Override
+    public Task getTaskById(int id) {
+        Task dataGetTaskById = super.getTaskById(id);
+        save();
+        return dataGetTaskById;
+    }
+
+    @Override
+    public Epic getEpicById(int id) {
+        Epic dataGetEpicById = super.getEpicById(id);
+        save();
+        return dataGetEpicById;
+    }
+
+    @Override
+    public Subtask getSubtaskById(int id) {
+        Subtask dataGetSubtaskById = super.getSubtaskById(id);
+        save();
+        return dataGetSubtaskById;
     }
 
     public static void main(String[] args) {
