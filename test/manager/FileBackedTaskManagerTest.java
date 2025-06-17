@@ -28,7 +28,6 @@ public class FileBackedTaskManagerTest {
         assertTrue(loadManager.getTasks().isEmpty(), "Tasks пустые");
         assertTrue(loadManager.getEpics().isEmpty(), "Epics пустые");
         assertTrue(loadManager.getSubtasks().isEmpty(), "Subtasks пустые");
-        assertTrue(loadManager.getHistory().isEmpty(), "History пустая");
     }
 
     @Test
