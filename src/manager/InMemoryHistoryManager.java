@@ -1,12 +1,9 @@
 package manager;
 
-
 import task.Task;
-
 import java.util.*;
 
 public class InMemoryHistoryManager implements HistoryManager {
-
 
     private final Map<Integer, Node> history = new HashMap<>();
     private Node head;
@@ -29,7 +26,14 @@ public class InMemoryHistoryManager implements HistoryManager {
 
     @Override
     public List<Task> getHistory() {
-        return getTasks();
+        List<Task> taskHistory = new ArrayList<>();
+        Node current = head;
+
+        while (current != null) {
+            taskHistory.add(current.task);
+            current = current.next;
+        }
+        return taskHistory;
     }
 
     private void linkLast(Task task) {
@@ -60,17 +64,6 @@ public class InMemoryHistoryManager implements HistoryManager {
         node.prev = null;
         node.next = null;
         node.task = null;
-    }
-
-    private List<Task> getTasks() {
-        List<Task> taskHistory = new ArrayList<>();
-        Node current = head;
-
-        while (current != null) {
-            taskHistory.add(current.task);
-            current = current.next;
-        }
-        return taskHistory;
     }
 
     private static class Node {

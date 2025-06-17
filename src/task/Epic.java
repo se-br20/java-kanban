@@ -10,10 +10,6 @@ public class Epic extends Task {
         super(name, description);
     }
 
-    public List<Integer> getSubtaskIds() {
-        return subtaskIds;
-    }
-
     public void addSubtask(int subtaskId) {
         subtaskIds.add(subtaskId);
     }
@@ -21,6 +17,10 @@ public class Epic extends Task {
     public void removeSubtask(int subtaskId) {
 
         subtaskIds.remove(Integer.valueOf(subtaskId));
+    }
+
+    public List<Integer> getSubtaskIds() {
+        return subtaskIds;
     }
 
     @Override

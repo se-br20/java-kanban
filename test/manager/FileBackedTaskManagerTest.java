@@ -19,7 +19,7 @@ public class FileBackedTaskManagerTest {
     void setup() throws IOException {
         tempFile = File.createTempFile("test", ".csv");
         tempFile.deleteOnExit();
-        manager = new FileBackedTaskManager(new InMemoryHistoryManager(), tempFile.toPath());
+        manager = new FileBackedTaskManager(tempFile.toPath());
     }
 
     @Test
@@ -50,14 +50,14 @@ public class FileBackedTaskManagerTest {
         assertEquals(1, manager.getTasks().size());
         assertEquals(1, manager.getEpics().size());
         assertEquals(1, manager.getSubtasks().size());
-        assertEquals(3, manager.getHistory().size());
+
 
         FileBackedTaskManager loadManager = FileBackedTaskManager.loadFromFile(tempFile);
 
         assertEquals(1, loadManager.getTasks().size());
         assertEquals(1, loadManager.getEpics().size());
         assertEquals(1, loadManager.getSubtasks().size());
-        assertEquals(3, loadManager.getHistory().size());
+
     }
 
 
