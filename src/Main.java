@@ -2,6 +2,8 @@ import manager.Managers;
 import manager.TaskManager;
 import task.*;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class Main {
@@ -9,8 +11,9 @@ public class Main {
 
         TaskManager taskManager = Managers.getDefault();
 
-        Task task1 = new Task("Task 1", "Описание задачи");
-        Task task2 = new Task("Task 2", "Описание задачи");
+        Task task1 = new Task("Task 1", "Описание задачи", LocalDateTime.now(), Duration.ofMinutes(10));
+        Task task2 = new Task("Task 2", "Описание задачи", LocalDateTime.now().plusMinutes(30),
+                Duration.ofMinutes(20));
 
         taskManager.addTask(task1);
         taskManager.addTask(task2);
@@ -18,8 +21,10 @@ public class Main {
         Epic epic1 = new Epic("Epic 1", "Описание эпика");
         taskManager.addEpic(epic1);
 
-        Subtask subtask1 = new Subtask("Subtask 1", "Описание подзадачи", epic1.getId());
-        Subtask subtask2 = new Subtask("Subtask 2", "Описание подзадачи", epic1.getId());
+        Subtask subtask1 = new Subtask("Subtask 1", "Описание подзадачи",
+                LocalDateTime.now().plusHours(2), Duration.ofMinutes(40), epic1.getId());
+        Subtask subtask2 = new Subtask("Subtask 2", "Описание подзадачи",
+                LocalDateTime.now().plusHours(1), Duration.ofMinutes(50), epic1.getId());
 
         taskManager.addSubtask(subtask1);
         taskManager.addSubtask(subtask2);
@@ -27,7 +32,8 @@ public class Main {
         Epic epic2 = new Epic("Epic 2", "Описание эпика");
         taskManager.addEpic(epic2);
 
-        Subtask subtask3 = new Subtask("Subtask 3", "Описание подзадачи", epic2.getId());
+        Subtask subtask3 = new Subtask("Subtask 3", "Описание подзадачи",
+                LocalDateTime.now().plusHours(1), Duration.ofMinutes(30), epic2.getId());
         taskManager.addSubtask(subtask3);
 
         System.out.println("\nСписок задач:");

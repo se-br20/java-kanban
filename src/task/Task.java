@@ -1,17 +1,24 @@
 package task;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.Objects;
 
-public class Task {
+public class Task implements Comparable<Task>{
     protected String name;
     protected String description;
     protected int id;
     protected Status status = Status.NEW;
+    protected Duration duration;
+    protected LocalDateTime startTime;
 
-    public Task(String name, String description) {
+    public Task(String name, String description, LocalDateTime startTime, Duration duration) {
         this.name = name;
         this.description = description;
-    }
+        this.startTime = startTime;
+        this.duration = duration;
+}
 
     public int getId() {
         return id;
@@ -49,6 +56,26 @@ public class Task {
         return TaskType.TASK;
     }
 
+    public Duration getDuration() {
+        return duration;
+    }
+
+    public void setDuration(Duration duration) {
+        this.duration = duration;
+    }
+
+    public LocalDateTime getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
+    }
+
+    public LocalDateTime getEndTime(){
+       return (startTime != null && duration != null) ? startTime.plus(duration) : null;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
@@ -67,6 +94,15 @@ public class Task {
                 ", name = '" + name + "'" +
                 ", description = '" + description + "'" +
                 ", status = " + status +
+                ", startTime = " + startTime +
+                ", duration = " + duration +
                 '}';
+    }
+    @Override
+    public int compareTo(Task o){
+        return Comparator
+                .comparing((Task task) -> task.getStartTime() != null ? task.getStartTime() : LocalDateTime.MAX)
+                .thenComparing(Task::getId)
+                .compare(this, o);
     }
 }

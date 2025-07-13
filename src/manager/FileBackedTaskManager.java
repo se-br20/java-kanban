@@ -5,8 +5,10 @@ import task.*;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.*;
-import java.io.File;
+
 
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
@@ -14,13 +16,13 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     private final File file;
 
     public FileBackedTaskManager(Path filePath) {
-        super(Managers.getDefaultHistory());
+        super();
         this.file = filePath.toFile();
     }
 
     private void save() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
-            writer.write("id,type,name,status,description,epic\n");
+            writer.write("id,type,name,status,description,epic,startTime,duration\n");
             for (Task task : tasks.values()) {
                 writer.write(Converter.toString(task) + "\n");
             }
@@ -52,8 +54,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                         manager.tasks.put(id, task);
                         break;
                     case EPIC:
-                        Epic epic = (Epic) task;
-                        manager.epics.put(id, epic);
+                        manager.epics.put(id, (Epic) task);
                         break;
                     case SUBTASK:
                         Subtask subtask = (Subtask) task;
@@ -65,6 +66,11 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                     manager.counterId = id + 1;
                 }
             }
+            manager.epics.values().forEach(e -> {
+                manager.updateEpicTime(e);
+                manager.updateEpicStatus(e.getId());
+            });
+            manager.rebuildPrioritized();
         } catch (IOException e) {
             throw new ManagerSaveException("Ошибка при загрузке из файла: " + file.getName(), e);
         }
@@ -130,20 +136,17 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
     @Override
     public Task getTaskById(int id) {
-        Task dataGetTaskById = super.getTaskById(id);
-        return dataGetTaskById;
+        return super.getTaskById(id);
     }
 
     @Override
     public Epic getEpicById(int id) {
-        Epic dataGetEpicById = super.getEpicById(id);
-        return dataGetEpicById;
+        return super.getEpicById(id);
     }
 
     @Override
     public Subtask getSubtaskById(int id) {
-        Subtask dataGetSubtaskById = super.getSubtaskById(id);
-        return dataGetSubtaskById;
+        return super.getSubtaskById(id);
     }
 
     public static void main(String[] args) {
@@ -151,15 +154,17 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
         FileBackedTaskManager manager = new FileBackedTaskManager(file.toPath());
 
-        Task task = new Task("Task", "Описание Task");
+        Task task = new Task("Task", "Описание Task", LocalDateTime.now(), Duration.ofMinutes(30));
         manager.addTask(task);
 
         Epic epic = new Epic("Epic", "Описание Epic");
         manager.addEpic(epic);
 
-        Subtask subtask1 = new Subtask("Subtask1", "Описание Subtask1", epic.getId());
+        Subtask subtask1 = new Subtask("Subtask1", "Описание Subtask1",
+                LocalDateTime.now().plusHours(1), Duration.ofMinutes(45), epic.getId());
         manager.addSubtask(subtask1);
-        Subtask subtask2 = new Subtask("Subtask2", "Описание Subtask2", epic.getId());
+        Subtask subtask2 = new Subtask("Subtask2", "Описание Subtask2",
+                LocalDateTime.now().plusHours(2), Duration.ofMillis(60), epic.getId());
         manager.addSubtask(subtask2);
 
         manager.getTaskById(task.getId());
