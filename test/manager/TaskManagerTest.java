@@ -83,7 +83,7 @@ public abstract class TaskManagerTest<T extends TaskManager> {
     @Test
     void getHistoryTracksViewsWithoutDuplicates() {
         Task task1 = new Task("Task 1", "Description", LocalDateTime.now(), Duration.ofMinutes(15));
-        Task task2 = new Task("Task 2", "Description", LocalDateTime.now().plusMinutes(11),
+        Task task2 = new Task("Task 2", "Description", LocalDateTime.now().plusMinutes(17),
                 Duration.ofMinutes(15));
         taskManager.addTask(task1);
         taskManager.addTask(task2);
