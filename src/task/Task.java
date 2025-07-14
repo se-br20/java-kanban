@@ -45,6 +45,10 @@ public class Task {
         this.status = status;
     }
 
+    public TaskType getType() {
+        return TaskType.TASK;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
@@ -54,7 +58,6 @@ public class Task {
 
     @Override
     public int hashCode() {
-
         return Objects.hash(id);
     }
 
