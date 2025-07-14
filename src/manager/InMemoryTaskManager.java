@@ -96,8 +96,8 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public Task addTask(Task task) {
         validateTime(task);
-        addPrioritized(task);
         task.setId(counterId++);
+        addPrioritized(task);
         tasks.put(task.getId(), task);
         return task;
     }
@@ -117,8 +117,8 @@ public class InMemoryTaskManager implements TaskManager {
             System.out.println("Эпик с id: " + subtask.getEpicId() + " не найден.");
             return null;
         }
-        addPrioritized(subtask);
         subtask.setId(counterId++);
+        addPrioritized(subtask);
         subtasks.put(subtask.getId(), subtask);
         epic.addSubtask(subtask.getId());
         updateEpicTime(epic);
