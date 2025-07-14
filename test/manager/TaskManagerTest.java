@@ -92,15 +92,15 @@ public abstract class TaskManagerTest<T extends TaskManager> {
         taskManager.getTaskById(task1.getId());
 
         List<Task> history = taskManager.getHistory();
-        assertEquals(List.of(task1,task2), history);
+        assertEquals(List.of(task1, task2), history);
     }
 
     @Test
-    void getPrioritizedTasksSortedByStartTime(){
+    void getPrioritizedTasksSortedByStartTime() {
         Task task1 = new Task("Task 1", "Description",
-                LocalDateTime.of(2025,1,1,10,0), Duration.ofMinutes(10));
+                LocalDateTime.of(2025, 1, 1, 10, 0), Duration.ofMinutes(10));
         Task task2 = new Task("Task 2", "Description",
-                LocalDateTime.of(2025,1,1,7,0), Duration.ofMinutes(10));
+                LocalDateTime.of(2025, 1, 1, 7, 0), Duration.ofMinutes(10));
 
         taskManager.addTask(task1);
         taskManager.addTask(task2);
@@ -110,11 +110,11 @@ public abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     @Test
-    void shouldDetectOverlapAndTrow(){
+    void shouldDetectOverlapAndTrow() {
         Task task1 = new Task("Task 1", "Description",
-                LocalDateTime.of(2025,1,1,10,0), Duration.ofMinutes(60));
+                LocalDateTime.of(2025, 1, 1, 10, 0), Duration.ofMinutes(60));
         Task task2 = new Task("Task 2", "Description",
-                LocalDateTime.of(2025,1,1,10,30), Duration.ofMinutes(30));
+                LocalDateTime.of(2025, 1, 1, 10, 30), Duration.ofMinutes(30));
         taskManager.addTask(task1);
         assertThrows(IllegalArgumentException.class, () -> taskManager.addTask(task2), "Пересекающиеся задачи");
 

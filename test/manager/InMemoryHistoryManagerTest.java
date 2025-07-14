@@ -36,6 +36,7 @@ class InMemoryHistoryManagerTest {
     void emptyHistory() {
         assertTrue(historyManager.getHistory().isEmpty(), "История должна быть пустой изначально");
     }
+
     @Test
     void shouldNotDuplicateTasksInHistory() {
         historyManager.add(task);
@@ -82,7 +83,7 @@ class InMemoryHistoryManagerTest {
     }
 
     @Test
-    void correctUsageInHistory(){
+    void correctUsageInHistory() {
         historyManager.add(task);
         historyManager.add(epic);
         historyManager.add(subtask);

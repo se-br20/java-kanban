@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.Objects;
 
-public class Task implements Comparable<Task>{
+public class Task implements Comparable<Task> {
     protected String name;
     protected String description;
     protected int id;
@@ -18,7 +18,7 @@ public class Task implements Comparable<Task>{
         this.description = description;
         this.startTime = startTime;
         this.duration = duration;
-}
+    }
 
     public int getId() {
         return id;
@@ -72,8 +72,8 @@ public class Task implements Comparable<Task>{
         this.startTime = startTime;
     }
 
-    public LocalDateTime getEndTime(){
-       return (startTime != null && duration != null) ? startTime.plus(duration) : null;
+    public LocalDateTime getEndTime() {
+        return (startTime != null && duration != null) ? startTime.plus(duration) : null;
     }
 
     @Override
@@ -98,8 +98,9 @@ public class Task implements Comparable<Task>{
                 ", duration = " + duration +
                 '}';
     }
+
     @Override
-    public int compareTo(Task o){
+    public int compareTo(Task o) {
         return Comparator
                 .comparing((Task task) -> task.getStartTime() != null ? task.getStartTime() : LocalDateTime.MAX)
                 .thenComparing(Task::getId)

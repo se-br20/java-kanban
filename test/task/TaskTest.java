@@ -36,7 +36,7 @@ class TaskTest {
     @Test
     void epicAndSubtaskWithSameIdShouldNotBeEqual() {
         Epic epic = new Epic("Epic", "Epic description");
-        Subtask subtask = new Subtask("Subtask", "Subtask description",LocalDateTime.now(),
+        Subtask subtask = new Subtask("Subtask", "Subtask description", LocalDateTime.now(),
                 Duration.ofMinutes(10), 1);
         epic.setId(2);
         subtask.setId(2);
@@ -89,15 +89,15 @@ class TaskTest {
 
     @Test
     void testGetEndTime() {
-        LocalDateTime start = LocalDateTime.of(2025,1,1,10,0);
-        Task task = new Task("Task 1","Description", start, Duration.ofMinutes(90));
+        LocalDateTime start = LocalDateTime.of(2025, 1, 1, 10, 0);
+        Task task = new Task("Task 1", "Description", start, Duration.ofMinutes(90));
         assertEquals(start.plusMinutes(90), task.getEndTime());
     }
 
     @Test
     void getEndTimeWhenNull() {
-        Task task1 = new Task("Task 1","Description", null, Duration.ofMinutes(10));
-        Task task2 = new Task("Task 2","Another description", LocalDateTime.now(), null);
+        Task task1 = new Task("Task 1", "Description", null, Duration.ofMinutes(10));
+        Task task2 = new Task("Task 2", "Another description", LocalDateTime.now(), null);
         assertNull(task1.getEndTime());
         assertNull(task2.getEndTime());
     }
