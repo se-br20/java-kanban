@@ -12,10 +12,7 @@ public class InMemoryHistoryManager implements HistoryManager {
 
     @Override
     public void add(Task task) {
-        if (task == null) {
-            return;
-        }
-        remove(task.getId());
+        if (task == null || history.containsKey(task.getId())) return;
         linkLast(task);
     }
 
