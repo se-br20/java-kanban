@@ -3,6 +3,7 @@ package manager;
 import task.Epic;
 import task.Subtask;
 import task.Task;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,4 +47,6 @@ public interface TaskManager {
     List<Subtask> getSubtasksEpic(int epicId);
 
     List<Task> getHistory();
+
+    List<Task> getPrioritizedTasks();
 }
