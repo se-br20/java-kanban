@@ -57,9 +57,6 @@ public class InMemoryTaskManager implements TaskManager {
         subtasks.values().stream()
                 .filter(t -> t.getStartTime() != null && t.getDuration() != null)
                 .forEach(this::addPrioritized);
-        epics.values().stream()
-                .filter(t -> t.getStartTime() != null && t.getDuration() != null)
-                .forEach(this::addPrioritized);
     }
 
     protected void updateEpicTime(Epic epic) {
