@@ -121,7 +121,7 @@ public abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     @Test
-    void shouldAddTaskWhenBeforeExisting(){
+    void shouldAddTaskWhenBeforeExisting() {
         Task task1 = new Task("Task 1", "Description",
                 LocalDateTime.of(2025, 1, 1, 10, 0), Duration.ofMinutes(60));
         Task task2 = new Task("Task 2", "Desc",
