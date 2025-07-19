@@ -58,7 +58,7 @@ public class InMemoryTaskManager implements TaskManager {
                 .min(LocalDateTime::compareTo)
                 .orElse(null);
         LocalDateTime maxEndTime = tasks.stream()
-                .map(Subtask::getEndTime)
+                .map(Subtask::getStartTime)
                 .filter(Objects::nonNull)
                 .max(LocalDateTime::compareTo)
                 .orElse(null);
