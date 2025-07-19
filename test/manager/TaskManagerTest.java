@@ -110,7 +110,7 @@ public abstract class TaskManagerTest<T extends TaskManager> {
     }
 
     @Test
-    void shouldDetectOverlapAndTrow() {
+    void shouldThrowWhenTasksOverlapSimpleCase() {
         Task task1 = new Task("Task 1", "Description",
                 LocalDateTime.of(2025, 1, 1, 10, 0), Duration.ofMinutes(60));
         Task task2 = new Task("Task 2", "Description",
@@ -118,6 +118,72 @@ public abstract class TaskManagerTest<T extends TaskManager> {
         taskManager.addTask(task1);
         assertThrows(IllegalArgumentException.class, () -> taskManager.addTask(task2), "Пересекающиеся задачи");
 
+    }
+
+    @Test
+    void shouldAddTaskWhenBeforeExisting(){
+        Task task1 = new Task("Task 1", "Description",
+                LocalDateTime.of(2025, 1, 1, 10, 0), Duration.ofMinutes(60));
+        Task task2 = new Task("Task 2", "Desc",
+                LocalDateTime.of(2025, 1, 1, 8, 0), Duration.ofMinutes(60));
+        taskManager.addTask(task1);
+        assertDoesNotThrow(() -> taskManager.addTask(task2),
+                "Задача после существующей не должна вызвать исключения");
+    }
+
+    @Test
+    void shouldThrowIfNewTaskStartsInsideExisting() {
+        Task task1 = new Task("Task 1", "Desc",
+                LocalDateTime.of(2025, 1, 1, 10, 0), Duration.ofMinutes(60));
+        Task task2 = new Task("Task 2", "Desc",
+                LocalDateTime.of(2025, 1, 1, 10, 30), Duration.ofMinutes(60));
+        taskManager.addTask(task1);
+        assertThrows(IllegalArgumentException.class,
+                () -> taskManager.addTask(task2), "Новая задача начинается внутри существующей");
+    }
+
+    @Test
+    void shouldThrowIfNewTaskEndsInsideExisting() {
+        Task task1 = new Task("Task 1", "Desc",
+                LocalDateTime.of(2025, 1, 1, 10, 0), Duration.ofMinutes(60));
+        Task task2 = new Task("Task 2", "Desc",
+                LocalDateTime.of(2025, 1, 1, 9, 30), Duration.ofMinutes(60));
+        taskManager.addTask(task1);
+        assertThrows(IllegalArgumentException.class,
+                () -> taskManager.addTask(task2), "Новая задача заканчивается внутри существующей");
+    }
+
+    @Test
+    void shouldThrowIfNewTaskIsInsideExisting() {
+        Task task1 = new Task("Task 1", "Desc",
+                LocalDateTime.of(2025, 1, 1, 9, 0), Duration.ofMinutes(180));
+        Task task2 = new Task("Task 2", "Desc",
+                LocalDateTime.of(2025, 1, 1, 10, 0), Duration.ofMinutes(30));
+        taskManager.addTask(task1);
+        assertThrows(IllegalArgumentException.class,
+                () -> taskManager.addTask(task2), "Новая задача полностью внутри существующей");
+    }
+
+    @Test
+    void shouldThrowIfNewTaskCoversExistingCompletely() {
+        Task task1 = new Task("Task 1", "Desc",
+                LocalDateTime.of(2025, 1, 1, 10, 0), Duration.ofMinutes(30));
+        Task task2 = new Task("Task 2", "Desc",
+                LocalDateTime.of(2025, 1, 1, 9, 0), Duration.ofMinutes(180));
+        taskManager.addTask(task1);
+        assertThrows(IllegalArgumentException.class,
+                () -> taskManager.addTask(task2), "Новая задача полностью перекрывает существующую");
+    }
+
+    @Test
+    void shouldThrowIfStartTimesAreEqual() {
+        Task task1 = new Task("Task 1", "Desc",
+                LocalDateTime.of(2025, 1, 1, 10, 0), Duration.ofMinutes(30));
+        Task task2 = new Task("Task 2", "Desc",
+                LocalDateTime.of(2025, 1, 1, 10, 0), Duration.ofMinutes(15));
+        taskManager.addTask(task1);
+        assertThrows(IllegalArgumentException.class,
+                () -> taskManager.addTask(task2), "Новая задача начинается в то же время, что и существующая");
     }
 
 }

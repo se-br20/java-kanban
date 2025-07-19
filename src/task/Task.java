@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.Objects;
 
-public class Task implements Comparable<Task> {
+public class Task {
     protected String name;
     protected String description;
     protected int id;
@@ -97,13 +97,5 @@ public class Task implements Comparable<Task> {
                 ", startTime = " + startTime +
                 ", duration = " + duration +
                 '}';
-    }
-
-    @Override
-    public int compareTo(Task o) {
-        return Comparator
-                .comparing((Task task) -> task.getStartTime() != null ? task.getStartTime() : LocalDateTime.MAX)
-                .thenComparing(Task::getId)
-                .compare(this, o);
     }
 }

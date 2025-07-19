@@ -36,6 +36,16 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         }
     }
 
+    protected void rebuildPrioritized() {
+        prioritizedTasks.clear();
+        tasks.values().stream()
+                .filter(t -> t.getStartTime() != null && t.getDuration() != null)
+                .forEach(this::addPrioritized);
+        subtasks.values().stream()
+                .filter(t -> t.getStartTime() != null && t.getDuration() != null)
+                .forEach(this::addPrioritized);
+    }
+
     public static FileBackedTaskManager loadFromFile(File file) {
         FileBackedTaskManager manager = new FileBackedTaskManager(file.toPath());
         try {
