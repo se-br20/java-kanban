@@ -13,8 +13,7 @@ public class InMemoryTaskManager implements TaskManager {
     protected final HashMap<Integer, Epic> epics = new HashMap<>();
     protected final HistoryManager historyManager;
     protected final NavigableSet<Task> prioritizedTasks = new TreeSet<>(
-            Comparator.comparing(Task::getStartTime,
-                            Comparator.nullsLast(Comparator.naturalOrder()))
+            Comparator.comparing(Task::getStartTime, Comparator.nullsLast(Comparator.naturalOrder()))
                     .thenComparingInt(Task::getId));
 
     public InMemoryTaskManager() {
@@ -22,8 +21,8 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     private static boolean isOverlap(Task firstTask, Task secondTask) {
-        return firstTask.getStartTime().isBefore(secondTask.getEndTime()) && secondTask.getStartTime().
-                isBefore(firstTask.getEndTime());
+        return firstTask.getStartTime().isBefore(secondTask.getEndTime()) && secondTask.getStartTime()
+                        .isBefore(firstTask.getEndTime());
     }
 
     private void checkOverlap(Task newTask) {
