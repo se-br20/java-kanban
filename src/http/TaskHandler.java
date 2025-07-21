@@ -7,7 +7,6 @@ import manager.TaskManager;
 import task.Task;
 
 import java.io.IOException;
-import java.net.URI;
 import java.util.NoSuchElementException;
 
 public class TaskHandler extends BaseHttpHandler implements HttpHandler {
