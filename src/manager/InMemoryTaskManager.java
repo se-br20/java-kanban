@@ -94,8 +94,8 @@ public class InMemoryTaskManager implements TaskManager {
             System.out.println("Эпик с id: " + subtask.getEpicId() + " не найден.");
             return null;
         }
-        subtask.setId(counterId++);
         addPrioritized(subtask);
+        subtask.setId(counterId++);
         subtasks.put(subtask.getId(), subtask);
         epic.addSubtask(subtask.getId());
         updateEpicTime(epic);
