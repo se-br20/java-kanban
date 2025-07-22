@@ -1,4 +1,4 @@
-package http;
+package http.handlers;
 
 import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
@@ -18,15 +18,10 @@ public class HistoryHandler extends BaseHttpHandler implements HttpHandler {
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
-        try {
-            if ("GET".equals(exchange.getRequestMethod())
-                    && "/history".equals(exchange.getRequestURI().getPath())) {
-                sendText(exchange, gson.toJson(manager.getHistory()), 200);
-            } else {
-                sendNotFound(exchange);
-            }
-        } catch (Exception e) {
-            sendServerError(exchange);
+        if ("GET".equals(exchange.getRequestMethod())) {
+            sendText(exchange, gson.toJson(manager.getHistory()));
+        } else {
+            sendNotFound(exchange);
         }
     }
 }

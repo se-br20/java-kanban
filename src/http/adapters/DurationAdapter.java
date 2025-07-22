@@ -1,4 +1,4 @@
-package http;
+package http.adapters;
 
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
@@ -13,7 +13,7 @@ public class DurationAdapter extends TypeAdapter<Duration> {
         if (value == null) {
             out.nullValue();
         } else {
-            out.value(value.toMinutes()); // или toMillis(), как вам удобнее
+            out.value(value.toMinutes());
         }
     }
 
