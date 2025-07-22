@@ -30,7 +30,7 @@ public class HttpTaskServer {
         server.createContext("/prioritized", new PrioritizedHandler(manager, gsonStatic));
     }
 
-    private static Gson createGson(){
+    private static Gson createGson() {
         return new GsonBuilder()
                 .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
                 .registerTypeAdapter(Duration.class, new DurationAdapter())
